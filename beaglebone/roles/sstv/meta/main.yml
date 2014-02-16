@@ -1,0 +1,4 @@
+dependencies:
+- role: gpsd
+- role: ntpd
+  use_gps: true

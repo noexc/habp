@@ -1,0 +1,5 @@
+- name: Install collectd
+  yum: name=collectd state=present
+
+- name: Start collectd now and at boot
+  service: name=collectd enabled=yes state=started

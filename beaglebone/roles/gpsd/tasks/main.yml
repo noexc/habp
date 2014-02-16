@@ -1,0 +1,9 @@
+- name: Install gpsd dependencies
+  yum: name={{item}} state=present
+  with_items:
+  - gpsd
+  - gpsd-clients
+  - gpsd-libs
+
+- name: Start gpsd now and on boot
+  service: name=gpsd enabled=yes state=started

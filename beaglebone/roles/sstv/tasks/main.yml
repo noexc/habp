@@ -1,0 +1,7 @@
+- name: Install SSTV dependencies
+  yum: name={{item}} state=present
+  with_items:
+  - aplay
+  - fswebcam
+  - ImageMagick
+  - robot36

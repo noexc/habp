@@ -1,0 +1,5 @@
+- name: Install ntpd
+  yum: name=ntpd state=present
+
+- name: Start ntpd now and at boot
+  service: name=ntpd enabled=yes state=started

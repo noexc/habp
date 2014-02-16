@@ -1,0 +1,10 @@
+- name: Deploy HABP
+  hosts: "{{host}}"
+  user: root
+  roles:
+  - critical
+  - monitor
+  - sstv
+  - gpsd
+  - role: ntpd
+    from_gps: true

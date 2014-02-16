@@ -1,0 +1,2 @@
+- name: Ensure automatic reboot on kernel panic
+  lineinfile: dest=/etc/sysctl.d/kpanic-reboot.conf regexp='^kernel\.panic' line='kernel.panic = 7'
