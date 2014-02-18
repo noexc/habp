@@ -1,0 +1,6 @@
+[habp]
+name=HABP repo
+baseurl=http://static.w8upd.org/yum/habp/$basearch/
+enabled=1
+skip_if_unavailable=0
+gpgcheck=0

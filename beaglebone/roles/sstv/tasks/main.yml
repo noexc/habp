@@ -1,6 +1,3 @@
-- name: Install robot36 repo
-  copy: src=files/robot36.repo dest=/etc/yum.repos.d/robot36.repo
-
 - name: Install SSTV dependencies
   yum: name={{item}} state=present
   with_items:

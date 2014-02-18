@@ -3,6 +3,7 @@
   user: root
   roles:
   - critical
+  - payload
   - monitor
   - sstv
   - gpsd

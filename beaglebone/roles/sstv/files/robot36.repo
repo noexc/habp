@@ -1,6 +1,0 @@
-[robot36-codeblock-fedorapeople]
-name=robot36 codeblock fedorapeople repo
-baseurl=http://repos.fedorapeople.org/repos/codeblock/robot36/fedora-$releasever/$basearch/
-enabled=1
-skip_if_unavailable=0
-gpgcheck=0

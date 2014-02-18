@@ -1,0 +1,2 @@
+- name: Install habp repo
+  copy: src=files/habp.repo dest=/etc/yum.repos.d/habp.repo
