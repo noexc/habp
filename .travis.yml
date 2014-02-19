@@ -4,4 +4,4 @@ install:
 - pip install ansible
 script:
 - cd ansible
-- ansible-playbook --syntax-check *.yml
+- ansible-playbook -i inventory --syntax-check *.yml
