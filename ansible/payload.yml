@@ -9,3 +9,6 @@
   - gpsd
   - role: ntpd
     from_gps: true
+  tasks:
+  - name: Update all packages
+    yum: name=* state=latest
