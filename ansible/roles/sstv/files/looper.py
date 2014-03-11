@@ -3,6 +3,18 @@
 # BSD-3
 # (c) 2014 Ricky Elrod
 
+# NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!!
+# NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!!
+
+# This script is intended to ONLY ever be run from some kind of init system
+# such as Supervisord or Angel. THE PROGRAM IS INTENDED TO ERROR EARLY so that
+# the init system can restart it and get it back into a known state.
+# DO NOT RUN THIS SCRIPT IN PRODUCTION WITHOUT STUFFING IT BEHIND AN INIT SYSTEM
+# OF SOME SORT.
+
+# NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!!
+# NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!! NOTE!!!
+
 from datetime import datetime
 import gps
 import os
