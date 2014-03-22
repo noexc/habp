@@ -1,0 +1,56 @@
+- name: Install git
+  yum: name=git state=latest
+
+- name: Pull mapview from GitHub
+  git: repo=git://github.com/w8upd/mapview.git dest=/srv/mapview
+
+- name: Haskell all the things
+  yum: name={{item}} state=latest
+  with_items:
+  - haskell-platform
+  - cabal-install
+
+- name: Update cabal db
+  command: cabal update
+
+- name: Install latest cabal
+  command: cabal install cabal-install
+
+- name: Create sandbox
+  command: chdir=/srv/mapview /root/.cabal/bin/cabal sandbox init
+
+- name: Install MapView
+  command: chdir=/srv/mapview /root/.cabal/bin/cabal install
+
+- name: Install copr repo
+  command: curl -o /etc/yum.repos.d/codeblock-closure-compiler.repo http://copr.fedoraproject.org/coprs/codeblock/closure-compiler/repo/fedora-rawhide-i386/
+
+- name: Install closure-compiler
+  yum: name=closure-compiler state=latest
+
+- name: Generate MapView JS
+  shell: cd /srv/mapview/static && ./build.sh
+
+- name: Install supervisord
+  yum: name=supervisor state=latest
+
+- name: Put supervisord config into place
+  copy: src=supervisord.conf dest=/etc/supervisord.d/mapview.ini
+
+- name: Start supervisord (and at boot)
+  service: name=supervisord state=started enabled=yes
+
+- name: Open ports in firewall
+  copy: src=iptables dest=/etc/sysconfig/iptables
+
+- name: Restart iptables
+  service: name=iptables state=restarted enabled=yes
+
+- name: Install nginx
+  yum: name=nginx state=latest
+
+- name: Put nginx config in place
+  copy: src=mapview.nginx.conf dest=/etc/nginx/conf.d/mapview.conf
+
+- name: Start nginx
+  service: name=nginx state=started enabled=yes

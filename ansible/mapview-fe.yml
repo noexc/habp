@@ -1,0 +1,10 @@
+- name: Deploy MapView frontend
+  hosts: "{{host}}"
+  user: root
+  roles:
+  - mapview
+  - role: ntpd
+    from_gps: false
+  tasks:
+  - name: Update all packages
+    yum: name=* state=latest
