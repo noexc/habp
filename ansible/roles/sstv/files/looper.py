@@ -23,6 +23,14 @@ import shutil
 from threading import Thread
 import time
 
+def sstv_debug_log(module, s, force=False):
+    debug = True
+    if debug or force:
+        print '[%s] %s' % (module, s)
+        return True
+    else:
+        return False
+
 if not os.path.exists('/var/tmp/img'):
     os.makedirs('/var/tmp/img')
 
@@ -37,11 +45,11 @@ class GPSObtainer(Thread):
     def run(self):
         global g, pid
         try:
-            print 'GPSObtainer reporting for duty'
+            sstv_debug_log('GPSObtainer', 'GPSObtainer reporting for duty')
             while True:
                 g.next()
         except Exception as e:
-            print str(e)
+            sstv_debug_log('GPSObtainer', str(e))
             os._exit(1)
 
 class ImageSnapper(Thread):
@@ -52,15 +60,16 @@ class ImageSnapper(Thread):
         global g, pid
         try:
             while True:
-                print 'ImageSnapper reporting for duty'
-                path = '/tmp/img/%s.jpg' % str(time.time())
-                fswebcam(resolution='1280x720', device="/dev/video1", save=path)
+                sstv_debug_log('ImageSnapper', 'ImageSnapper reporting for duty')
+                path = '/var/tmp/img/%s.jpg' % str(time.time())
+                output = fswebcam(resolution='1280x720', device="/dev/video0", save=path)
+                sstv_debug_log('ImageSnapper', output)
                 shutil.copyfile(path, '/tmp/latest.jpg')
                 with open('/var/tmp/img/coordinates.txt', 'a') as log:
                     log.write(path + ': ' + '%f, %f\n' % (g.fix.latitude, g.fix.longitude))
                 time.sleep(30)
         except Exception as e:
-            print str(e)
+            sstv_debug_log('ImageSnapper', str(e))
             os._exit(1)
 
 class Encoder(Thread):
@@ -74,7 +83,7 @@ class Encoder(Thread):
                 # Wait 5 seconds so that on the initial go, we have an image from
                 # ImageSnapper above.
                 time.sleep(5)
-                print 'Encoder reporting for duty'
+                sstv_debug_log('Encoder', 'Encoder reporting for duty')
                 convert(
                     '/tmp/latest.jpg',
                     '-resize', '320x240!',
@@ -95,7 +104,7 @@ class Encoder(Thread):
                 robot36_encode('/tmp/latest.ppm', '/tmp/latest.wav')
                 time.sleep(30)
         except Exception as e:
-            print str(e)
+            sstv_debug_log('Encoder', str(e), True)
             os._exit(1)
 
 class Player(Thread):
@@ -107,10 +116,10 @@ class Player(Thread):
         try:
             while True:
                 time.sleep(10)
-                print 'Player reporting for duty'
+                sstv_debug_log('Player', 'Player reporting for duty')
                 aplay('/tmp/latest.wav')
         except Exception as e:
-            print str(e)
+            sstv_debug_log('Player', str(e), True)
             os._exit(1)
 
 gps_thread = GPSObtainer()
