@@ -18,7 +18,7 @@
 from datetime import datetime
 import gps
 import os
-from sh import aplay, convert, fswebcam, kill, robot36_encode
+from sh import aplay, convert, fswebcam, kill, mv, robot36_encode
 import shutil
 from threading import Thread
 import time
@@ -62,8 +62,7 @@ class ImageSnapper(Thread):
             while True:
                 sstv_debug_log('ImageSnapper', 'ImageSnapper reporting for duty')
                 path = '/var/tmp/img/%s.jpg' % str(time.time())
-                output = fswebcam(resolution='1280x720', device="/dev/video0", save=path)
-                sstv_debug_log('ImageSnapper', output)
+                fswebcam(resolution='1280x720', device="/dev/video0", save=path)
                 shutil.copyfile(path, '/tmp/latest.jpg')
                 with open('/var/tmp/img/coordinates.txt', 'a') as log:
                     log.write(path + ': ' + '%f, %f\n' % (g.fix.latitude, g.fix.longitude))
@@ -78,11 +77,9 @@ class Encoder(Thread):
 
     def run(self):
         global g, pid
+        time.sleep(15)
         try:
             while True:
-                # Wait 5 seconds so that on the initial go, we have an image from
-                # ImageSnapper above.
-                time.sleep(5)
                 sstv_debug_log('Encoder', 'Encoder reporting for duty')
                 convert(
                     '/tmp/latest.jpg',
@@ -95,14 +92,14 @@ class Encoder(Thread):
                     '-annotate', '+0+40',
                     'W8UPD',
                     '-fill', 'black',
-                    '-annotate', '+0+230',
+                    '-annotate', '+30+230',
                     '%f, %f' % (g.fix.latitude, g.fix.longitude),
                     '-fill', 'white',
-                    '-annotate', '+0+233',
+                    '-annotate', '+33+233',
                     '%f, %f' % (g.fix.latitude, g.fix.longitude),
                     '/tmp/latest.ppm')
-                robot36_encode('/tmp/latest.ppm', '/tmp/latest.wav')
-                time.sleep(30)
+                robot36_encode('/tmp/latest.ppm', '/tmp/inprogress.wav')
+                mv('/tmp/inprogress.wav', '/tmp/latest.wav')
         except Exception as e:
             sstv_debug_log('Encoder', str(e), True)
             os._exit(1)
@@ -115,12 +112,15 @@ class Player(Thread):
         global pid
         try:
             while True:
-                time.sleep(10)
+                if not os.path.isfile('/tmp/latest.wav'):
+                    sstv_debug_log('Player', '/tmp/latest.wav not found, continuing')
+                    continue
                 sstv_debug_log('Player', 'Player reporting for duty')
+                time.sleep(60)
                 aplay('/tmp/latest.wav')
         except Exception as e:
             sstv_debug_log('Player', str(e), True)
-            os._exit(1)
+            pass
 
 gps_thread = GPSObtainer()
 gps_thread.start()
