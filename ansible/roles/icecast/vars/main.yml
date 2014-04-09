@@ -1,0 +1,16 @@
+vars_prompt:
+  - name: "icecast_admin_user"
+    prompt: "Icecast admin username"
+    private: yes
+
+  - name: "icecast_admin_password"
+    prompt: "Icecast admin password"
+    private: yes
+
+  - name: "icecast_stream_user"
+    prompt: "Icecast stream username"
+    private: yes
+
+  - name: "icecast_stream_password"
+    prompt: "Icecast stream password"
+    private: yes

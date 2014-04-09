@@ -1,0 +1,5 @@
+- name: Deploy Icecast relay
+  hosts: "{{host}}"
+  user: root
+  roles:
+  - icecast

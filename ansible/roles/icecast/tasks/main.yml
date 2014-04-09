@@ -1,0 +1,20 @@
+- name: Open iptables for icecast
+      lineinfile: dest=/etc/sysconfig/iptables
+                  regexp="^-A INPUT -p {{item.protocol}} -m {{item.protocol}} --dport {{item.port}} -j ACCEPT$"
+                  line="-A INPUT -p {{item.protocol}} -m {{item.protocol}} --dport {{item.port}} -j ACCEPT"
+                  insertafter="^:OUTPUT ACCEPT \[\d*:\d*\]$"
+      with_items:
+        - { protocol: tcp, port: 8080 }
+      notify:
+        - restart iptables
+
+- name: Install icecast
+  yum: name={{item}} state=latest
+  with_items:
+  - icecast
+
+- name: Icecast config
+  template: src=icecast.xml dest=/etc/icecast.xml
+
+- name: Start Icecast (and at boot)
+  service: name=icecast state=started enabled=yes

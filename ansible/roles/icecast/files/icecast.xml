@@ -1,0 +1,66 @@
+<icecast>
+    <limits>
+        <clients>100</clients>
+        <sources>5</sources>
+        <threadpool>5</threadpool>
+        <queue-size>524288</queue-size>
+        <client-timeout>30</client-timeout>
+        <header-timeout>15</header-timeout>
+        <source-timeout>10</source-timeout>
+        <burst-on-connect>1</burst-on-connect>
+        <burst-size>65535</burst-size>
+    </limits>
+
+    <authentication>
+        <!-- Sources log in with username 'source' -->
+        <source-password>{{icecast_stream_password}}</source-password>
+        <!-- Relays log in username 'relay' -->
+        <relay-password>{{icecast_stream_password}}</relay-password>
+
+        <!-- Admin logs in with the username given below -->
+        <admin-user>{{icecast_admin_user}}</admin-user>
+        <admin-password>{{icecast_admin_password}}</admin-password>
+    </authentication>
+
+    <hostname>mapview.w8upd.org</hostname>
+
+    <listen-socket>
+        <port>8080</port>
+        <bind-address>0.0.0.0</bind-address>
+    </listen-socket>
+
+    <mount>
+        <mount-name>/repeater.ogg</mount-name>
+        <username>{{icecast_stream_user}}</username>
+        <password>{{icecast_stream_password}}</password>
+        <burst-size>65536</burst-size>
+        <hidden>0</hidden>
+        <no-yp>0</no-yp>
+        <public>1</public>
+    </mount>
+
+    <fileserve>0</fileserve>
+    <paths>
+        <basedir>/usr/share/icecast</basedir>
+        <logdir>/var/log/icecast</logdir>
+        <webroot>/usr/share/icecast/web</webroot>
+        <adminroot>/usr/share/icecast/admin</adminroot>
+        <pidfile>/var/run/icecast/icecast.pid</pidfile>
+        <alias source="/" dest="/status.xsl"/>
+    </paths>
+
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+        <loglevel>3</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+        <logsize>10000</logsize> <!-- Max size of a logfile -->
+    </logging>
+
+    <security>
+        <chroot>0</chroot>
+        <changeowner>
+            <user>icecast</user>
+            <group>icecast</group>
+        </changeowner>
+    </security>
+</icecast>
