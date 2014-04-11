@@ -31,6 +31,9 @@
 - name: Generate MapView JS
   shell: cd /srv/mapview/static && ./build.sh
 
+- name: Generate MapView JS (again?)
+  shell: cd /srv/mapview/static && ./build.sh
+
 - name: Install supervisord
   yum: name=supervisor state=latest
 
