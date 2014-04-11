@@ -13,9 +13,9 @@
 
     <authentication>
         <!-- Sources log in with username 'source' -->
-        <source-password>{{icecast_admin_user}}</source-password>
+        <source-password>{{icecast_stream_password}}</source-password>
         <!-- Relays log in username 'relay' -->
-        <relay-password>{{icecast_admin_password}}</relay-password>
+        <relay-password>{{icecast_stream_password}}</relay-password>
 
         <!-- Admin logs in with the username given below -->
         <admin-user>{{icecast_admin_user}}</admin-user>
