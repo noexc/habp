@@ -1,10 +1,12 @@
 # habp
 
-High Altitude Balloon Project. Code that W8UPD develops for use on their near
+**This repository isn't currently used**
+
+High Altitude Balloon Project. Code that NOEXC develops for use on their near
 space adventures.
 
 These flights are documented on the
-[W8UPD wiki](https://wiki.w8upd.org/wiki/Category:HABP).
+[NOEXC wiki](https://noexc.org/wiki/NOEXC_Balloon_Project).
 
 This code is under pretty constant development and is targeted at the
 requirements of our next flight, whatever that happens to be. We will tag code
